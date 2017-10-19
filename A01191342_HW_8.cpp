@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <queue>
+#include <vector>
 
 using namespace std;
 
@@ -26,9 +27,11 @@ bool validateValues(int N, int C, int R) {
 	return false;
 }
 
-void roadInput(queue &aGraph, string sLocA, string sValue, string sLocB) {
+void roadInput(int aGraph[100][100], vector<string> &vLocs, string sLocA, string sValue, string sLocB) {
 	//Records the values and connections of the roads.
-	
+	//Cleanse string variables, sLocA, sValue, sLocB.
+	//Function to return index of location or create a new one from vLocs.
+	//Store in aGraph
 }
 
 int main () {
@@ -38,9 +41,12 @@ int main () {
 	int N = 0;//0 < N < 100
 	int C = 0;//0 <= C < 1000
 	int R = 0;//0 < R < 10000
-	string sLocation = "";
-	int aGraph[100][100] = {};
-	queue<string> vLocations;
+	int aGraph[100][100] = {};//2D Array graph.
+
+	string sLocation = "";//Location container.
+	queue<string> qLocations;//Queue to attend car crashes as they where registered.
+	vector<string> vLocations;//Vector for storing locations indexes.
+
 
 	//Fills 2D array with "Infinite" (No connection)
 	for (int i = 0; i < 100; i++)
@@ -59,7 +65,7 @@ int main () {
 			for (int i = 0; i <= C; i++)
 			{	
 				cin >> sLocation;
-				vLocations.push(sLocation);
+				qLocations.push(sLocation);
 			}
 
 			string sLocA;
@@ -68,8 +74,8 @@ int main () {
 
 			for (int i = 0; i < R; ++i)
 			{
-				cin sLocA; cin >> sValue; cin >> sLocB;
-				roadInput(aGraph, sLocA, sValue, sLocB);
+				cin >> sLocA; cin >> sValue; cin >> sLocB;
+				roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
 			}
 
 		} else {

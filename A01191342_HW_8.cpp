@@ -16,25 +16,12 @@
 
 using namespace std;
 
-void showMatrix(int aGraph[100][100], int N) {
-	//DEBUGG ONLY=========================****************
-	//*******
-	//****
-	//**
-	//*
-	//Fills 2D array with "Infinite" (No connection), also cleanses the matrix for new use.
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			printf("%4d", aGraph[i][j]);
-		}
-		cout << endl;
-	}
-
-	cout << endl;
-}
-
 void fillMatrix(int aGraph[100][100], int N) {
 	//Fills 2D array with "Infinite" (No connection), also cleanses the matrix for new use.
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			aGraph[i][j] = 0;
+
 	for (int i = 0; i < N; i++)
 		for (int j = 0; j < N; j++)
 			if (i != j)
@@ -95,7 +82,7 @@ void roadInput(int aGraph[100][100], vector<string> &vLocs, string sLocA, string
 }
 
 // Algoritmo de Floyd
-int min(int a,int b)
+int min(int a, int b)
 {
  if(a<b)
   return(a);
@@ -108,6 +95,22 @@ void floyd(int aGraph[100][100], int N)
 		for(int i = 0; i < N; i++)
 			for(int j = 0; j < N; j++)
 				aGraph[i][j]=min(aGraph[i][j],aGraph[i][k]+aGraph[k][j]);
+}
+
+int getDistanceRoute(int aGraph[100][100], queue<string> qLocations, vector<string> &vLocs)
+{
+	int iSumDistance = 0;//Distance tarveled acumulation.
+	string sAux; //Auxiliar variable to hold starting point.
+
+	while(!qLocations.empty())
+	{
+		sAux = qLocations.front();
+		qLocations.pop();
+
+		iSumDistance += aGraph[lIndex(vLocs, sAux)][lIndex(vLocs, qLocations.front())];
+	}
+
+	return iSumDistance;
 }
 
 int main () {
@@ -124,8 +127,8 @@ int main () {
 	vector<string> vLocations;//Vector for storing locations indexes.
 
 	//One or more test cases.
-	do {
-
+	do 
+	{
 		//New test case. 0, 0, 0 == no more test cases.
 		cin >> N; cin >> C; cin >> R;
 
@@ -133,11 +136,19 @@ int main () {
 		{
 			fillMatrix(aGraph, N);//For cleaning and initializing.
 
-			for (int i = 0; i <= C; i++)
+			//First place/input is the agency base.
+			cin >> sLocation;
+			qLocations.push(sLocation);
+			vLocations.push_back(sLocation);
+
+			//Next car queues
+			for (int i = 0; i < C; i++)
 			{	
 				cin >> sLocation;
 				qLocations.push(sLocation);
 			}
+
+			qLocations.push(qLocations.front());//Needs to return to agency base, so we add the last point as the base.
 
 			//Auxiliar variables
 			string sLocA;
@@ -150,13 +161,9 @@ int main () {
 				roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
 			}
 
-			cout << endl;
-
-			showMatrix(aGraph, N);
-
 			floyd(aGraph, N);//Apply floyd for shortest paths.
 
-			showMatrix(aGraph, N);
+			cout << getDistanceRoute(aGraph, qLocations, vLocations) << endl;//Gets the total travel distance.
 		}
 
 	} while(N != 0 && C != 0 && R != 0);

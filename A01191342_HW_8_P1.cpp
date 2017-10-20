@@ -99,14 +99,14 @@ int getDistanceRoute(int aGraph[100][100], queue<string> &qLocations, vector<str
 	string sAux; //Auxiliar variable to hold starting point.
 
 	//While qLocations.size() > 1, So the last element does not pop and then access a null element in the queue.
-	while(qLocations.size() >= 1)
+	while(qLocations.size() > 1)
 	{
-		cout << " " << qLocations.front() << ", ";
 		sAux = qLocations.front();
 		qLocations.pop();
 		iSumDistance += aGraph[lIndex(vLocs, sAux)][lIndex(vLocs, qLocations.front())];
 	}
-
+	
+	qLocations.pop();//Remove last element, not needed. Leave queue empty.
 	return iSumDistance;
 }
 

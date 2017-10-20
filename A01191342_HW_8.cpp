@@ -102,7 +102,8 @@ int getDistanceRoute(int aGraph[100][100], queue<string> &qLocations, vector<str
 	int iSumDistance = 0;//Distance tarveled acumulation.
 	string sAux; //Auxiliar variable to hold starting point.
 
-	while(!qLocations.empty())
+	//While qLocations.size() > 1, So the last element does not pop and then access a null element in the queue.
+	while(qLocations.size() > 1)
 	{
 		sAux = qLocations.front();
 		qLocations.pop();

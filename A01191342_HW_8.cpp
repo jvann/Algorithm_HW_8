@@ -16,6 +16,29 @@
 
 using namespace std;
 
+void showMatrix(int aGraph[100][100], int N) {
+	//DEBUGG ONLY=========================****************
+	//*******
+	//****
+	//**
+	//*
+	//Fills 2D array with "Infinite" (No connection), also cleanses the matrix for new use.
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			printf("%4d", aGraph[i][j]);
+		}
+		cout << endl;
+	}
+}
+
+void fillMatrix(int aGraph[100][100], int N) {
+	//Fills 2D array with "Infinite" (No connection), also cleanses the matrix for new use.
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			if (i != j)
+				aGraph[i][j] = 999;
+}
+
 bool validateValues(int N, int C, int R) {
 	//Validates the range of values.
 	//Validate 0 < N < 100, 0 <= C < 1000, 0 < R < 10000
@@ -27,14 +50,16 @@ bool validateValues(int N, int C, int R) {
 	return false;
 }
 
-int locationIndex(vector<string> &vLocs, string sLocation){
+int lIndex(vector<string> &vLocs, string sLocation){
+	//LocationIndex.
+	//Gets the index of the location given, if not found, it is added to the vector list.
 	for (int i = 0; i < vLocs.size(); ++i)
 		if (vLocs[i] == sLocation)
 			return i;
 
 	vLocs.push_back(sLocation);//If no location was found, push new location to vector.
 
-	return vLocs.size();//Return vLocs size for the last index.
+	return vLocs.size()-1;//Return vLocs size for the last index.
 }
 
 void roadInput(int aGraph[100][100], vector<string> &vLocs, string sLocA, string sValue, string sLocB) {
@@ -55,10 +80,16 @@ void roadInput(int aGraph[100][100], vector<string> &vLocs, string sLocA, string
 
 	//Convert string to int value(Distance).
 	iValue = stoi(sValue);
-	cout << iValue << endl;
 
-	//Function to return index of location or create a new one from vLocs.
-	//Store in aGraph
+	//Check locations.
+	lIndex(vLocs, sLocA);//For sLocA.
+	lIndex(vLocs, sLocB);//For sLocB.
+
+	//Store value(Distance) in aGraph.
+	if (sAux1 == "<")
+		aGraph[lIndex(vLocs, sLocB)][lIndex(vLocs, sLocA)] = iValue;
+	if (sAux2 == ">")
+		aGraph[lIndex(vLocs, sLocA)][lIndex(vLocs, sLocB)] = iValue;
 }
 
 int main () {
@@ -74,48 +105,42 @@ int main () {
 	queue<string> qLocations;//Queue to attend car crashes as they where registered.
 	vector<string> vLocations;//Vector for storing locations indexes.
 
-	roadInput(aGraph, vLocations, "sLocA", "<-53->", "sLocB");//Test.
+	//One or more test cases.
+	do {
 
-	// //Fills 2D array with "Infinite" (No connection)
-	// for (int i = 0; i < 100; i++)
-	// 	for (int j = 0; j < 100; j++)
-	// 		if (i != j)
-	// 			aGraph[i][j] = 999;
+		//New test case. 0, 0, 0 == no more test cases.
+		// cout << "Input N, C, R: " << endl;//Debugg
+		cin >> N; cin >> C; cin >> R;
 
-	// //One or more test cases.
-	// do {
+		if (validateValues(N, C, R))
+		{
+			fillMatrix(aGraph, N);//For cleaning and initializing.
 
-	// 	//New test case. 0, 0, 0 == no more test cases.
-	// 	cout << "Input N, C, R: " << endl;//Debugg
-	// 	cin >> N; cin >> C; cin >> R;
-	// 	cout << endl;//Debugg
+			for (int i = 0; i <= C; i++)
+			{	
+				// cout << "Input Loc: ";//Debugg
+				cin >> sLocation;
+				qLocations.push(sLocation);
+			}
 
-	// 	if (validateValues(N, C, R))
-	// 	{
-	// 		for (int i = 0; i <= C; i++)
-	// 		{	
-	// 			cout << "Input Loc: ";//Debugg
-	// 			cin >> sLocation;
-	// 			cout << endl;//Debugg
-	// 			qLocations.push(sLocation);
-	// 		}
+			string sLocA;
+			string sValue;
+			string sLocB;
 
-	// 		string sLocA;
-	// 		string sValue;
-	// 		string sLocB;
+			for (int i = 0; i < R; ++i)
+			{
+				// cout << "Input Locs: ";
+				cin >> sLocA; cin >> sValue; cin >> sLocB;
+				roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
+			}
 
-	// 		for (int i = 0; i < R; ++i)
-	// 		{
-	// 			cout << "Input Locs: ";
-	// 			cin >> sLocA; cin >> sValue; cin >> sLocB;
-	// 			cout << endl;
-	// 			roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
-	// 		}
+		} else {
+			cout << "No Test Case" << endl;
+		}
 
-	// 	} else {
-	// 		cout << "No Test Case" << endl;
-	// 	}
-	// } while(N != 0 && R != 0);
+		showMatrix(aGraph, N);
 
- //   return 0;
+	} while(N != 0 && R != 0);
+
+   return 0;
 }

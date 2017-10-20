@@ -20,10 +20,6 @@ void fillMatrix(int aGraph[100][100], int N) {
 	//Fills 2D array with "Infinite" (No connection), also cleanses the matrix for new use.
 	for (int i = 0; i < N; i++)
 		for (int j = 0; j < N; j++)
-			aGraph[i][j] = 0;
-
-	for (int i = 0; i < N; i++)
-		for (int j = 0; j < N; j++)
 			if (i != j)
 				aGraph[i][j] = 999;
 }
@@ -166,12 +162,7 @@ int main () {
 				roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
 			}
 
-			// cout << endl;
-			// showMatrix(aGraph, N);
-
 			floyd(aGraph, N);//Apply floyd for shortest paths.
-
-			// showMatrix(aGraph, N);
 
 			cout << getDistanceRoute(aGraph, qLocations, vLocations) << endl;//Gets the total travel distance.
 		}

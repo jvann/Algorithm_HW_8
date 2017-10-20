@@ -99,19 +99,22 @@ int getDistanceRoute(int aGraph[100][100], queue<string> &qLocations, vector<str
 	string sAux; //Auxiliar variable to hold starting point.
 
 	//While qLocations.size() > 1, So the last element does not pop and then access a null element in the queue.
-	while(qLocations.size() > 1)
+	while(qLocations.size() >= 1)
 	{
+		cout << " " << qLocations.front() << ", ";
 		sAux = qLocations.front();
 		qLocations.pop();
-		cout << "sAux: " << sAux << endl;
-		cout << "aGrahp[" << lIndex(vLocs, sAux) << "][" << lIndex(vLocs, qLocations.front()) << "] = " << aGraph[lIndex(vLocs, sAux)][lIndex(vLocs, qLocations.front())] << endl;
 		iSumDistance += aGraph[lIndex(vLocs, sAux)][lIndex(vLocs, qLocations.front())];
-		cout << "isum; " << iSumDistance << endl;
 	}
 
-	cout << "Size of queue: " << qLocations.size() << endl;
-	cout << "Final isum; " << iSumDistance << endl;
 	return iSumDistance;
+}
+
+bool validateLocation(string sLocation) 
+{
+	if (sLocation.length() <= 10)
+		return true;
+	return false;
 }
 
 int main () {
@@ -121,18 +124,20 @@ int main () {
 	int N = 0;//0 < N < 100
 	int C = 0;//0 <= C < 1000
 	int R = 0;//0 < R < 10000
+	int k = 1;//Number of test cases.
 	int aGraph[100][100] = {};//2D Array graph.
 
 	string sLocation = "";//Location container.
 	queue<string> qLocations;//Queue to attend car crashes as they where registered.
 	vector<string> vLocations;//Vector for storing locations indexes.
 
-	//One or more test cases.
-	do 
-	{
-		//New test case. 0, 0, 0 == no more test cases.
-		cin >> N; cin >> C; cin >> R;
+	//New test case. 0, 0, 0 == no more test cases.
+	cin >> N; cin >> C; cin >> R;
 
+	//One or more test cases.
+	while(N != 0 && C != 0 && R != 0) 
+	{	
+		cout << endl;
 		if (validateValues(N, C, R))
 		{
 			fillMatrix(aGraph, N);//For cleaning and initializing.
@@ -164,10 +169,16 @@ int main () {
 
 			floyd(aGraph, N);//Apply floyd for shortest paths.
 
-			cout << getDistanceRoute(aGraph, qLocations, vLocations) << endl;//Gets the total travel distance.
+			cout << k << ". " << getDistanceRoute(aGraph, qLocations, vLocations) << endl;//Gets the total travel distance.
+		}else {
+			cout << k << ". 0" << endl;
 		}
 
-	} while(N != 0 && C != 0 && R != 0);
+		k++;
+
+		//New test case. 0, 0, 0 == no more test cases.
+		cin >> N; cin >> C; cin >> R;
+	}
 
    return 0;
 }

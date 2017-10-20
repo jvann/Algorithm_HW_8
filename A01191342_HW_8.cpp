@@ -39,7 +39,24 @@ int locationIndex(vector<string> &vLocs, string sLocation){
 
 void roadInput(int aGraph[100][100], vector<string> &vLocs, string sLocA, string sValue, string sLocB) {
 	//Records the values and connections of the roads.
-	//Cleanse string variables, sLocA, sValue, sLocB.
+	//Auxiliar variables for connection.
+	int iValue;//Distance measured.
+
+	string sAux1;//Direction 1.
+	string sAux2;//Direction 2.
+
+	//Cleanse string variable sValue.
+	sAux1 = sValue.front();//Access first element.
+	sAux2 = sValue.back();//Access last element.
+
+	//Clear string for conversion.
+	sValue.erase(0,2);//Clears first 2 characters from string.
+	sValue.erase(sValue.length()-2,2);//Clears last two characters from string.
+
+	//Convert string to int value(Distance).
+	iValue = stoi(sValue);
+	cout << iValue << endl;
+
 	//Function to return index of location or create a new one from vLocs.
 	//Store in aGraph
 }
@@ -57,40 +74,48 @@ int main () {
 	queue<string> qLocations;//Queue to attend car crashes as they where registered.
 	vector<string> vLocations;//Vector for storing locations indexes.
 
-	//Fills 2D array with "Infinite" (No connection)
-	for (int i = 0; i < 100; i++)
-		for (int j = 0; j < 100; j++)
-			if (i != j)
-				aGraph[i][j] = 999;
+	roadInput(aGraph, vLocations, "sLocA", "<-53->", "sLocB");//Test.
 
-	//One or more test cases.
-	do {
+	// //Fills 2D array with "Infinite" (No connection)
+	// for (int i = 0; i < 100; i++)
+	// 	for (int j = 0; j < 100; j++)
+	// 		if (i != j)
+	// 			aGraph[i][j] = 999;
 
-		//New test case. 0, 0, 0 == no more test cases.
-		cin >> N; cin >> C; cin >> R;
+	// //One or more test cases.
+	// do {
 
-		if (validateValues(N, C, R))
-		{
-			for (int i = 0; i <= C; i++)
-			{	
-				cin >> sLocation;
-				qLocations.push(sLocation);
-			}
+	// 	//New test case. 0, 0, 0 == no more test cases.
+	// 	cout << "Input N, C, R: " << endl;//Debugg
+	// 	cin >> N; cin >> C; cin >> R;
+	// 	cout << endl;//Debugg
 
-			string sLocA;
-			string sValue;
-			string sLocB;
+	// 	if (validateValues(N, C, R))
+	// 	{
+	// 		for (int i = 0; i <= C; i++)
+	// 		{	
+	// 			cout << "Input Loc: ";//Debugg
+	// 			cin >> sLocation;
+	// 			cout << endl;//Debugg
+	// 			qLocations.push(sLocation);
+	// 		}
 
-			for (int i = 0; i < R; ++i)
-			{
-				cin >> sLocA; cin >> sValue; cin >> sLocB;
-				roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
-			}
+	// 		string sLocA;
+	// 		string sValue;
+	// 		string sLocB;
 
-		} else {
-			cout << "No Test Case" << endl;
-		}
-	} while(N != 0 && R != 0);
+	// 		for (int i = 0; i < R; ++i)
+	// 		{
+	// 			cout << "Input Locs: ";
+	// 			cin >> sLocA; cin >> sValue; cin >> sLocB;
+	// 			cout << endl;
+	// 			roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
+	// 		}
 
-   return 0;
+	// 	} else {
+	// 		cout << "No Test Case" << endl;
+	// 	}
+	// } while(N != 0 && R != 0);
+
+ //   return 0;
 }

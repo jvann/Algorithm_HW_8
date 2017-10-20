@@ -29,6 +29,8 @@ void showMatrix(int aGraph[100][100], int N) {
 		}
 		cout << endl;
 	}
+
+	cout << endl;
 }
 
 void fillMatrix(int aGraph[100][100], int N) {
@@ -92,6 +94,22 @@ void roadInput(int aGraph[100][100], vector<string> &vLocs, string sLocA, string
 		aGraph[lIndex(vLocs, sLocA)][lIndex(vLocs, sLocB)] = iValue;
 }
 
+// Algoritmo de Floyd
+int min(int a,int b)
+{
+ if(a<b)
+  return(a);
+ return(b);
+}
+
+void floyd(int aGraph[100][100], int N)
+{
+	for(int k = 0; k < N; k++)
+		for(int i = 0; i < N; i++)
+			for(int j = 0; j < N; j++)
+				aGraph[i][j]=min(aGraph[i][j],aGraph[i][k]+aGraph[k][j]);
+}
+
 int main () {
 
 	//Problem 1
@@ -109,7 +127,6 @@ int main () {
 	do {
 
 		//New test case. 0, 0, 0 == no more test cases.
-		// cout << "Input N, C, R: " << endl;//Debugg
 		cin >> N; cin >> C; cin >> R;
 
 		if (validateValues(N, C, R))
@@ -118,29 +135,31 @@ int main () {
 
 			for (int i = 0; i <= C; i++)
 			{	
-				// cout << "Input Loc: ";//Debugg
 				cin >> sLocation;
 				qLocations.push(sLocation);
 			}
 
+			//Auxiliar variables
 			string sLocA;
 			string sValue;
 			string sLocB;
 
 			for (int i = 0; i < R; ++i)
 			{
-				// cout << "Input Locs: ";
 				cin >> sLocA; cin >> sValue; cin >> sLocB;
 				roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
 			}
 
-		} else {
-			cout << "No Test Case" << endl;
+			cout << endl;
+
+			showMatrix(aGraph, N);
+
+			floyd(aGraph, N);//Apply floyd for shortest paths.
+
+			showMatrix(aGraph, N);
 		}
 
-		showMatrix(aGraph, N);
-
-	} while(N != 0 && R != 0);
+	} while(N != 0 && C != 0 && R != 0);
 
    return 0;
 }

@@ -97,7 +97,7 @@ void floyd(int aGraph[100][100], int N)
 				aGraph[i][j]=min(aGraph[i][j],aGraph[i][k]+aGraph[k][j]);
 }
 
-int getDistanceRoute(int aGraph[100][100], queue<string> qLocations, vector<string> &vLocs)
+int getDistanceRoute(int aGraph[100][100], queue<string> &qLocations, vector<string> &vLocs)
 {
 	int iSumDistance = 0;//Distance tarveled acumulation.
 	string sAux; //Auxiliar variable to hold starting point.
@@ -106,10 +106,14 @@ int getDistanceRoute(int aGraph[100][100], queue<string> qLocations, vector<stri
 	{
 		sAux = qLocations.front();
 		qLocations.pop();
-
+		cout << "sAux: " << sAux << endl;
+		cout << "aGrahp[" << lIndex(vLocs, sAux) << "][" << lIndex(vLocs, qLocations.front()) << "] = " << aGraph[lIndex(vLocs, sAux)][lIndex(vLocs, qLocations.front())] << endl;
 		iSumDistance += aGraph[lIndex(vLocs, sAux)][lIndex(vLocs, qLocations.front())];
+		cout << "isum; " << iSumDistance << endl;
 	}
 
+	cout << "Size of queue: " << qLocations.size() << endl;
+	cout << "Final isum; " << iSumDistance << endl;
 	return iSumDistance;
 }
 
@@ -161,7 +165,12 @@ int main () {
 				roadInput(aGraph, vLocations, sLocA, sValue, sLocB);
 			}
 
+			// cout << endl;
+			// showMatrix(aGraph, N);
+
 			floyd(aGraph, N);//Apply floyd for shortest paths.
+
+			// showMatrix(aGraph, N);
 
 			cout << getDistanceRoute(aGraph, qLocations, vLocations) << endl;//Gets the total travel distance.
 		}

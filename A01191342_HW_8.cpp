@@ -27,6 +27,16 @@ bool validateValues(int N, int C, int R) {
 	return false;
 }
 
+int locationIndex(vector<string> &vLocs, string sLocation){
+	for (int i = 0; i < vLocs.size(); ++i)
+		if (vLocs[i] == sLocation)
+			return i;
+
+	vLocs.push_back(sLocation);//If no location was found, push new location to vector.
+
+	return vLocs.size();//Return vLocs size for the last index.
+}
+
 void roadInput(int aGraph[100][100], vector<string> &vLocs, string sLocA, string sValue, string sLocB) {
 	//Records the values and connections of the roads.
 	//Cleanse string variables, sLocA, sValue, sLocB.
@@ -46,7 +56,6 @@ int main () {
 	string sLocation = "";//Location container.
 	queue<string> qLocations;//Queue to attend car crashes as they where registered.
 	vector<string> vLocations;//Vector for storing locations indexes.
-
 
 	//Fills 2D array with "Infinite" (No connection)
 	for (int i = 0; i < 100; i++)
